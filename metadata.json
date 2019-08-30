@@ -1,0 +1,74 @@
+{
+  "family": "$fargate-cluster-name",
+  "taskRoleArn": "arn:aws:iam::$ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "executionRoleArn": "arn:aws:iam::$ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "requiresCompatibilities": [
+        "FARGATE"
+    ], 
+    "cpu": "512", 
+    "memory": "4096",
+  
+
+ 
+
+  "containerDefinitions": [
+    {
+      "image": "metabase/metabase",
+      "name": "metabase",
+      "cpu": 2,
+      "memory": 2048,
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/metabase",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000
+        }
+      ],
+      "environment": [
+        {
+          "name": "MB_DB_DBNAME",
+          "value": "metabase"
+        },
+        {
+          "name": "MB_DB_HOST",
+          "value": "$DB_ENDPOINT"
+        },
+        {
+          "name": "MB_DB_PASS",
+          "value": "$DB_PASSWORD"
+        },
+        {
+          "name": "MB_DB_PORT",
+          "value": "5432"
+        },
+        {
+          "name": "MB_DB_TYPE",
+          "value": "postgres"
+        },
+        {
+          "name": "MB_DB_USER",
+          "value": "metabase"
+        }
+
+      ],
+      "ulimits": [
+        {
+          "name": "nofile",
+          "softLimit": 32000,
+          "hardLimit": 32000
+        }
+
+      ]
+    }
+  ]
+    
+}
