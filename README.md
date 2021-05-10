@@ -1,4 +1,4 @@
-# How to install metabase with  aws ecs docker fargate
+# How to install metabase with  aws ecs  fargate
 
 1 Create your own cluster with a unique name with the following command :
 
